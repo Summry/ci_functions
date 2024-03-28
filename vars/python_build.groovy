@@ -2,7 +2,7 @@ def call(dockerRepoName, imageName) {
     pipeline {
         agent any
         environment {
-            PATH = "$WORKSPACE/venv/bin:$PATH"
+            PATH = "/var/lib/jenkins/.local/bin:$PATH"
         }
 
         stages {
