@@ -8,16 +8,17 @@ def call(service, imageName) {
             stage('Build') {
                 steps {
                     script {
-                        sh 'apt-get install python3.8-venv python3-pip'
+                        sh 'sudo apt-get install -y python3.8-venv python3-pip'
                         sh 'python3 -m venv venv'
                         sh '. venv/bin/activate'
-                        sh 'pip install -r requirements.txt --break-system-packages'
+                        sh 'pip install -r requirements.txt'
                     }
                 }
             }
             stage('Python Lint') {
                 steps {
                     script {
+                        sh 'pip install pylint'
                         sh 'pylint --fail-under=5 *.py'
                     }
                 }
