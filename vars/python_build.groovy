@@ -10,6 +10,7 @@ def call(service, imageName) {
                 steps {
                     script {
                         sh """
+                            apt install -y python3-pip
                             pip install pylint
                             pylint --fail-under=5 --disable import-error ./${service}/*.py
                             """
