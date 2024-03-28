@@ -1,4 +1,4 @@
-def call(dockerRepoName, imageName) {
+def call(service, imageName) {
     pipeline {
         agent any
         environment {
@@ -11,7 +11,7 @@ def call(dockerRepoName, imageName) {
                     script {
                         sh """
                             pip install pylint
-                            pylint --fail-under=5 --disable import-error **.py
+                            pylint --fail-under=5 --disable import-error ./${service}/*.py
                             """
                     }
                 }
@@ -20,7 +20,10 @@ def call(dockerRepoName, imageName) {
             stage('Security') {
                 steps {
                     script {
-                        sh 'bandit -r *.py'
+                        sh """
+                            pip install bandit
+                            bandit -r ./${service}
+                            """
                     }
                 }
             }
@@ -32,8 +35,8 @@ def call(dockerRepoName, imageName) {
                 steps {
                     withCredentials([string(credentialsId: 'DockerHub', variable: 'TOKEN')]) {
                         sh "docker login -u 'nazzywazzy' -p '$TOKEN' docker.io"
-                        sh "docker build -t ${dockerRepoName}:latest --tag nazzywazzy/${dockerRepoName}:${imageName} ${dockerRepoName}/"
-                        sh "docker push nazzywazzy/${dockerRepoName}:${imageName}"
+                        sh "docker build -t ${service}:latest --tag nazzywazzy/${service}:${imageName} ${service}/"
+                        sh "docker push nazzywazzy/${service}:${imageName}"
                     }
                 }
             }
