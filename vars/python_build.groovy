@@ -18,8 +18,20 @@ def call(service, imageName) {
             stage('Python Lint') {
                 steps {
                     script {
-                        sh 'pip install pylint'
-                        sh "pylint --fail-under=5 ./${service}/*.py"
+                        sh """
+                            pip install pylint
+                            pylint --fail-under=5 ./${service}/*.py
+                            """
+                    }
+                }
+            }
+            stage('Security') {
+                steps {
+                    script {
+                        sh """
+                            pip install bandit
+                            bandit -r ./${service}
+                            """
                     }
                 }
             }
