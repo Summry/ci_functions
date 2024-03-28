@@ -19,7 +19,7 @@ def call(service, imageName) {
                 steps {
                     script {
                         sh 'pip install pylint'
-                        sh 'pylint --fail-under=5 *.py'
+                        sh 'pylint --fail-under=5 ./${service}/**.py'
                     }
                 }
             }
