@@ -8,6 +8,7 @@ def call(service, imageName) {
             stage('Build') {
                 steps {
                     script {
+                        sh 'apt install python3.8-venv python3-pip'
                         sh 'python3 -m venv venv'
                         sh '. venv/bin/activate'
                         sh 'pip install -r requirements.txt --break-system-packages'
