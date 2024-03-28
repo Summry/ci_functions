@@ -11,7 +11,7 @@ def call(dockerRepoName, imageName) {
                     script {
                         sh """
                             pip install pylint
-                            pylint --fail-under=5 --disable import-error ./${dir}/*.py
+                            pylint --fail-under=5 --disable import-error **.py
                             """
                     }
                 }
@@ -32,7 +32,7 @@ def call(dockerRepoName, imageName) {
                 steps {
                     withCredentials([string(credentialsId: 'DockerHub', variable: 'TOKEN')]) {
                         sh "docker login -u 'nazzywazzy' -p '$TOKEN' docker.io"
-                        sh "docker build -t ${dockerRepoName}:latest --tag nazzywazzy/${dockerRepoName}:${imageName} ."
+                        sh "docker build -t ${dockerRepoName}:latest --tag nazzywazzy/${dockerRepoName}:${imageName} ${dockerRepoName}/"
                         sh "docker push nazzywazzy/${dockerRepoName}:${imageName}"
                     }
                 }
