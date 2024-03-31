@@ -53,6 +53,8 @@ def call(service, imageName) {
                             ssh -t -t azureuser@52.160.84.127 -o StrictHostKeyChecking=no "
                             cd acit3855-project &&
                             git pull &&
+                            docker compose down &&
+                            docker compose pull &&
                             docker compose up --build -d"
                             '''
                     }
@@ -62,6 +64,7 @@ def call(service, imageName) {
         post {
             always {
                 script {
+                    sh 'rm -rf venv'
                     sh 'unset PATH'
                 }
             }
