@@ -49,7 +49,12 @@ def call(service, imageName) {
             stage('Deploy') {
                 steps {
                     sshagent(credentials : ['ssh-key']) {
-                        sh 'ssh -t -t azureuser@52.160.84.127 -o StrictHostKeyChecking=no "cd acit3855-project && docker compose up --build -d"'
+                        sh '''
+                            ssh -t -t azureuser@52.160.84.127 -o StrictHostKeyChecking=no "
+                            cd acit3855-project &&
+                            git pull &&
+                            docker compose up --build -d"
+                            '''
                     }
                 }
             }
