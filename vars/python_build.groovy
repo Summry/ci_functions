@@ -4,6 +4,9 @@ def call(service, imageName) {
         environment {
             PATH = "/var/lib/jenkins/.local/bin:$PATH"
         }
+        parameters {
+            booleanParam(defaultValue: false, description: 'Deploy the App', name: 'DEPLOY')
+        }
         stages {
             stage('Build') {
                 steps {
@@ -47,6 +50,9 @@ def call(service, imageName) {
                 }
             }
             stage('Deploy') {
+                when {
+                    expression { params.DEPLOY }
+                }
                 steps {
                     sshagent(credentials : ['ssh-key']) {
                         sh '''
