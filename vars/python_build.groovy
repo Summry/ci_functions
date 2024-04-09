@@ -59,7 +59,7 @@ def call(service, imageName) {
                             ssh -t -t azureuser@52.160.84.127 -o StrictHostKeyChecking=no "
                             cd acit3855-project &&
                             docker compose pull &&
-                            docker compose up --build -d"
+                            docker compose up -d"
                             '''
                     }
                 }
